@@ -40,9 +40,12 @@ export default function HistoryPage() {
     }
   }, [])
 
-  // Build workoutDays from records
+  // 只统计到今天为止的记录（有数据的日期最多到当日）
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
+  const recordsUpToToday = records.filter((r) => r.date <= todayStr)
+
   const workoutDays: Record<string, { count: number; duration: number }> = {}
-  records.forEach((record) => {
+  recordsUpToToday.forEach((record) => {
     if (!workoutDays[record.date]) {
       workoutDays[record.date] = { count: 0, duration: 0 }
     }
